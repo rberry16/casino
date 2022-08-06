@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { BACCARAT_SHUFFLE, BACCARAT_PLAYER_TOTAL, BACCARAT_DEALER_TOTAL, DEALER_DRAW, PLAYER_DRAW } from './action-types';
+import { SHUFFLE, BACCARAT_PLAYER_TOTAL, BACCARAT_DEALER_TOTAL, DEALER_DRAW, PLAYER_DRAW, HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN } from './action-types';
 
 
-export function baccaratShuffle () {
+export function shuffle () {
     return function (dispatch) {
-        axios.get('https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
+        axios.get('https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
             .then(res => {
-                dispatch({type: BACCARAT_SHUFFLE, payload: res.data});
+                dispatch({type: SHUFFLE, payload: res.data});
             })
             .catch(err => {
                 console.error(err);
@@ -63,3 +63,74 @@ export function baccaratDealerTotal (hand) {
     dispatch({type: BACCARAT_DEALER_TOTAL, payload: total})
     }
 }
+
+export function handsReset () {
+    return function (dispatch) {
+        dispatch({type: HANDS_RESET});
+    }
+}
+
+export function baccaratDealerTurn (dealerTotal, playerTotal, card, deck_id) {
+    return function (dispatch) {
+        if (dealerTotal === 3 && card !== 8) {
+            axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
+            .then(res => {
+                dispatch({type: BACCARAT_DEALER_TURN, payload: res.data});
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        } else if (dealerTotal === 4 && card > 1 && card < 8) {
+            axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
+            .then(res => {
+                dispatch({type: BACCARAT_DEALER_TURN, payload: res.data});
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        } else if (dealerTotal === 5 && card > 3 && card < 8) {
+            axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
+            .then(res => {
+                dispatch({type: BACCARAT_DEALER_TURN, payload: res.data});
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        } else if (dealerTotal === 6 && card > 5 && card < 8) {
+            axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
+            .then(res => {
+                dispatch({type: BACCARAT_DEALER_TURN, payload: res.data});
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        } else if (dealerTotal < 3 && playerTotal < 8) {
+            axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
+            .then(res => {
+                dispatch({type: BACCARAT_DEALER_TURN, payload: res.data});
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        } else {
+            dispatch({type: BACCARAT_DEALER_TURN, payload: null});
+        }
+    }
+}
+
+export function baccaratPlayerTurn (playerTotal, dealerTotal, deck_id) {
+    return function (dispatch) {
+        if (dealerTotal < 8 && playerTotal < 6) {
+            axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
+            .then(res => {
+                dispatch({type: BACCARAT_PLAYER_TURN, payload: res.data});
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        } else {
+            dispatch({type: BACCARAT_PLAYER_TURN, payload: null});
+        }
+    }
+}
+

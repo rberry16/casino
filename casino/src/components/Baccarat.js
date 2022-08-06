@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
 
-import { baccaratShuffle, playerDraw, dealerDraw, baccaratPlayerTotal, baccaratDealerTotal } from '../state/action-creators'
+import { shuffle, playerDraw, dealerDraw, baccaratPlayerTotal, baccaratDealerTotal, handsReset, baccaratPlayerTurn, baccaratDealerTurn } from '../state/action-creators'
 
 const Baccarat = (props) => {
     const {
@@ -12,20 +12,28 @@ const Baccarat = (props) => {
         dealerTotal,
         playerDraw,
         dealerDraw,
-        baccaratShuffle,
+        shuffle,
         baccaratPlayerTotal,
-        baccaratDealerTotal
+        baccaratDealerTotal,
+        handsReset,
+        baccaratPlayerTurn,
+        baccaratDealerTurn
     } = props;
 
     const startGame = () => {
-        playerDraw(deck.deck_id);
-        dealerDraw(deck.deck_id);
-        playerDraw(deck.deck_id);
-        dealerDraw(deck.deck_id);
+        handsReset();
+        setTimeout(playerDraw, 500, deck.deck_id);
+        setTimeout(dealerDraw, 1000, deck.deck_id);
+        setTimeout(playerDraw, 1500, deck.deck_id);
+        setTimeout(dealerDraw, 2000, deck.deck_id);
+    }
+
+    const handlePlayerTurn = () => {
+        baccaratPlayerTurn(playerTotal, dealerTotal, deck.deck_id);
     }
 
     useEffect(() => {
-        baccaratShuffle();
+        shuffle();
     }, [])
 
     useEffect(() => {
@@ -42,7 +50,7 @@ const Baccarat = (props) => {
                 deck ? (
                     <>
                         <div id='dealer'>
-                            <h3>{`Dealer total: ${dealerTotal}`}</h3>
+                            <h3>{`Dealer Total: ${dealerTotal}`}</h3>
                             {dealerHand.map(card => {
                                 return <img src={card.image} alt={card.code} />
                             })}
@@ -54,6 +62,7 @@ const Baccarat = (props) => {
                             })}
                         </div>
                         <button onClick={startGame}>New</button>
+                        <button onClick={handlePlayerTurn}>Flip</button>
                     </>
                 ) : 'Loading game...'
             }
@@ -72,4 +81,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {baccaratShuffle, playerDraw, dealerDraw, baccaratPlayerTotal, baccaratDealerTotal})(Baccarat);
+export default connect(mapStateToProps, {shuffle, playerDraw, dealerDraw, baccaratPlayerTotal, baccaratDealerTotal, handsReset, baccaratPlayerTurn, baccaratDealerTurn})(Baccarat);

@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import { combineReducers } from "redux";
-import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, BACCARAT_SHUFFLE, DEALER_DRAW, PLAYER_DRAW } from "./action-types";
+import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, SHUFFLE, DEALER_DRAW, PLAYER_DRAW, HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN } from "./action-types";
 
 
 
@@ -14,7 +14,7 @@ const initialBaccaratState = {
 };
 function baccarat(state = initialBaccaratState, action) {
     switch(action.type) {
-        case(BACCARAT_SHUFFLE): {
+        case(SHUFFLE): {
             const newDeck = {
                 success: action.payload.success,
                 deck_id: action.payload.deck_id,
@@ -29,12 +29,16 @@ function baccarat(state = initialBaccaratState, action) {
         case(PLAYER_DRAW): {
             const card = action.payload.cards[0];
             let value = 0;
-            if (card.value === 'KING' || card.value === 'Queen' || card.value === 'Jack') {
+            if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
                 value = 0;
             } else if (card.value === 'ACE') {
                 value = 1;
             } else {
                 value = Number(card.value);
+            }
+
+            if (value > 9) {
+                value = value - 10;
             }
             const newPlayerHand = [
                 ...state.playerHand,
@@ -53,13 +57,18 @@ function baccarat(state = initialBaccaratState, action) {
         case(DEALER_DRAW): {
             const card = action.payload.cards[0];
             let value = 0;
-            if (card.value === 'KING' || card.value === 'Queen' || card.value === 'Jack') {
+            if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
                 value = 0;
             } else if (card.value === 'ACE') {
                 value = 1;
             } else {
                 value = Number(card.value);
             }
+
+            if (value > 9) {
+                value = value - 10;
+            }
+
             const newDealerHand = [
                 ...state.dealerHand,
                 {
@@ -84,6 +93,83 @@ function baccarat(state = initialBaccaratState, action) {
             return {
                 ...state,
                 dealerTotal: action.payload
+            }
+        }
+        case(HANDS_RESET): {
+            return {
+                ...state,
+                playerHand: [],
+                dealerHand: []
+            }
+        }
+        case(BACCARAT_DEALER_TURN): {
+            const card = action.payload.cards[0];
+            if (!card) {
+                return {
+                    state
+                }
+            } else {
+                let value = 0;
+                if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
+                    value = 0;
+                } else if (card.value === 'ACE') {
+                    value = 1;
+                } else {
+                    value = Number(card.value);
+                }
+
+                if (value > 9) {
+                    value = value - 10;
+                }
+
+                const newDealerHand = [
+                    ...state.dealerHand,
+                    {
+                        image: card.image,
+                        value: value,
+                        suit: card.suit,
+                        code: card.code
+                    }
+                ]
+
+                return {
+                    ...state,
+                    dealerHand: newDealerHand
+                }
+            }
+        }
+        case(BACCARAT_PLAYER_TURN): {
+            const card = action.payload.cards[0];
+            if (!card) {
+                return {state};
+            } else {
+                let value = 0;
+                if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
+                    value = 0;
+                } else if (card.value === 'ACE') {
+                    value = 1;
+                } else {
+                    value = Number(card.value);
+                }
+
+                if (value > 9) {
+                    value = value - 10;
+                }
+
+                const newPlayerHand = [
+                    ...state.playerHand,
+                    {
+                        image: card.image,
+                        value: value,
+                        suit: card.suit,
+                        code: card.code
+                    }
+                ]
+
+                return {
+                    ...state,
+                    playerHand: newPlayerHand
+                }
             }
         }
     }

@@ -10,6 +10,8 @@ import Baccarat from './components/Baccarat';
 import Blackjack from './components/Blackjack';
 import Message from './components/Message';
 
+import './App.css';
+
 let store
 export const resetStore = () => {
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
