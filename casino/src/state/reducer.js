@@ -10,7 +10,8 @@ const initialBaccaratState = {
     dealerHand: [],
     playerTotal: 0,
     dealerTotal: 0,
-    message: ''
+    message: '',
+    lastCard: 0
 };
 function baccarat(state = initialBaccaratState, action) {
     switch(action.type) {
@@ -51,7 +52,8 @@ function baccarat(state = initialBaccaratState, action) {
             ]
             return {
                 ...state,
-                playerHand: newPlayerHand
+                playerHand: newPlayerHand,
+                lastCard: value
             }
         }
         case(DEALER_DRAW): {
@@ -80,7 +82,8 @@ function baccarat(state = initialBaccaratState, action) {
             ]
             return {
                 ...state,
-                dealerHand: newDealerHand
+                dealerHand: newDealerHand,
+                lastCard: value
             }
         }
         case(BACCARAT_PLAYER_TOTAL): {
@@ -134,7 +137,8 @@ function baccarat(state = initialBaccaratState, action) {
 
                 return {
                     ...state,
-                    dealerHand: newDealerHand
+                    dealerHand: newDealerHand,
+                    lastCard: value
                 }
             }
         }
@@ -168,7 +172,8 @@ function baccarat(state = initialBaccaratState, action) {
 
                 return {
                     ...state,
-                    playerHand: newPlayerHand
+                    playerHand: newPlayerHand,
+                    lastCard: value
                 }
             }
         }

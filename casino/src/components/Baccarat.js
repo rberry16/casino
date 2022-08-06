@@ -17,7 +17,8 @@ const Baccarat = (props) => {
         baccaratDealerTotal,
         handsReset,
         baccaratPlayerTurn,
-        baccaratDealerTurn
+        baccaratDealerTurn,
+        lastCard
     } = props;
 
     const startGame = () => {
@@ -28,8 +29,9 @@ const Baccarat = (props) => {
         setTimeout(dealerDraw, 2000, deck.deck_id);
     }
 
-    const handlePlayerTurn = () => {
+    const handleFlip = () => {
         baccaratPlayerTurn(playerTotal, dealerTotal, deck.deck_id);
+        setTimeout(baccaratDealerTurn, 500, dealerTotal, playerTotal, lastCard, deck.deck_id);
     }
 
     useEffect(() => {
@@ -62,7 +64,7 @@ const Baccarat = (props) => {
                             })}
                         </div>
                         <button onClick={startGame}>New</button>
-                        <button onClick={handlePlayerTurn}>Flip</button>
+                        <button onClick={handleFlip}>Flip</button>
                     </>
                 ) : 'Loading game...'
             }
@@ -77,7 +79,8 @@ const mapStateToProps = (state) => {
         playerHand: state.baccarat.playerHand,
         dealerHand: state.baccarat.dealerHand,
         playerTotal: state.baccarat.playerTotal,
-        dealerTotal: state.baccarat.dealerTotal
+        dealerTotal: state.baccarat.dealerTotal,
+        lastCard: state.baccarat.lastCard
     }
 }
 
