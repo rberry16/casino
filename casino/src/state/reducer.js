@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import { combineReducers } from "redux";
-import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, SHUFFLE, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN } from "./action-types";
+import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, SHUFFLE, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW } from "./action-types";
 
 
 
@@ -181,4 +181,69 @@ function baccarat(state = initialBaccaratState, action) {
     return state;
 }
 
-export default combineReducers({baccarat});
+const initialBlackJackState = {
+    deck: null,
+    playerHand: [],
+    dealerHand: [],
+    playerTotal: 0,
+    dealerTotal: 0
+}
+function blackjack(state = initialBlackJackState, action) {
+    switch(action.type) {
+        case(SHUFFLE): {
+            return {
+                ...state,
+                deck: action.payload.deck_id
+            }
+        }
+        case(BLACKJACK_PLAYER_DRAW): {
+            const card = action.payload.cards[0];
+            let value = 0;
+            if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
+                value = 10;
+            } else if (card.value === 'ACE') {
+                value = 'ACE';
+            } else {
+                value = Number(card.value);
+            }
+            const newPlayerHand = [
+                ...state.playerHand,
+                {
+                    image: card.image,
+                    code: card.code,
+                    value: value
+                }
+            ]
+            return {
+                ...state,
+                playerHand: newPlayerHand
+            }
+        }
+        case(BLACKJACK_DEALER_DRAW): {
+            const card = action.payload.cards[0];
+            let value = 0;
+            if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
+                value = 10;
+            } else if (card.value === 'ACE') {
+                value = 'ACE';
+            } else {
+                value = Number(card.value);
+            }
+            const newDealerHand = [
+                ...state.dealerHand,
+                {
+                    image: card.image,
+                    code: card.code,
+                    value: value
+                }
+            ]
+            return {
+                ...state,
+                dealerHand: newDealerHand
+            }
+        }
+    }
+    return state;
+}
+
+export default combineReducers({baccarat, blackjack});

@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { SHUFFLE, BACCARAT_PLAYER_TOTAL, BACCARAT_DEALER_TOTAL, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN } from './action-types';
+import { SHUFFLE, BACCARAT_PLAYER_TOTAL, BACCARAT_DEALER_TOTAL, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW } from './action-types';
 
-
+//shared actions
 export function shuffle () {
     return function (dispatch) {
         axios.get('https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
@@ -14,6 +14,7 @@ export function shuffle () {
     }
 }
 
+//Baccarat actions
 export function baccaratPlayerDraw (deck_id) {
     return function (dispatch) {
         axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
@@ -134,3 +135,27 @@ export function baccaratPlayerTurn (playerTotal, dealerTotal, deck_id) {
     }
 }
 
+//Blackjack actions
+export function blackjackPlayerDraw (deck_id) {
+    return function(dispatch) {
+        axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
+            .then(res => {
+                dispatch({type: BLACKJACK_PLAYER_DRAW, payload: res.data});
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
+}
+
+export function blackjackDealerDraw (deck_id) {
+    return function(dispatch) {
+        axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
+            .then(res => {
+                dispatch({type: BLACKJACK_DEALER_DRAW, payload: res.data});
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
+}
