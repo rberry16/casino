@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
 
-import { shuffle, playerDraw, dealerDraw, baccaratPlayerTotal, baccaratDealerTotal, handsReset, baccaratPlayerTurn, baccaratDealerTurn } from '../state/action-creators'
+import { shuffle, baccaratPlayerDraw, baccaratDealerDraw, baccaratPlayerTotal, baccaratDealerTotal, baccaratHandsReset, baccaratPlayerTurn, baccaratDealerTurn } from '../state/action-creators'
 
 const Baccarat = (props) => {
     const {
@@ -10,23 +10,23 @@ const Baccarat = (props) => {
         dealerHand, 
         playerTotal, 
         dealerTotal,
-        playerDraw,
-        dealerDraw,
+        baccaratPlayerDraw,
+        baccaratDealerDraw,
         shuffle,
         baccaratPlayerTotal,
         baccaratDealerTotal,
-        handsReset,
+        baccaratHandsReset,
         baccaratPlayerTurn,
         baccaratDealerTurn,
         lastCard
     } = props;
 
     const startGame = () => {
-        handsReset();
-        setTimeout(playerDraw, 500, deck.deck_id);
-        setTimeout(dealerDraw, 1000, deck.deck_id);
-        setTimeout(playerDraw, 1500, deck.deck_id);
-        setTimeout(dealerDraw, 2000, deck.deck_id);
+        baccaratHandsReset();
+        setTimeout(baccaratPlayerDraw, 500, deck.deck_id);
+        setTimeout(baccaratDealerDraw, 1000, deck.deck_id);
+        setTimeout(baccaratPlayerDraw, 1500, deck.deck_id);
+        setTimeout(baccaratDealerDraw, 2000, deck.deck_id);
     }
 
     const handleFlip = () => {
@@ -84,4 +84,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {shuffle, playerDraw, dealerDraw, baccaratPlayerTotal, baccaratDealerTotal, handsReset, baccaratPlayerTurn, baccaratDealerTurn})(Baccarat);
+export default connect(mapStateToProps, {shuffle, baccaratPlayerDraw, baccaratDealerDraw, baccaratPlayerTotal, baccaratDealerTotal, baccaratHandsReset, baccaratPlayerTurn, baccaratDealerTurn})(Baccarat);

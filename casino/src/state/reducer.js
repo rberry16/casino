@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import { combineReducers } from "redux";
-import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, SHUFFLE, DEALER_DRAW, PLAYER_DRAW, HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN } from "./action-types";
+import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, SHUFFLE, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN } from "./action-types";
 
 
 
@@ -27,7 +27,7 @@ function baccarat(state = initialBaccaratState, action) {
                 deck: newDeck
             }
         }
-        case(PLAYER_DRAW): {
+        case(BACCARAT_PLAYER_DRAW): {
             const card = action.payload.cards[0];
             let value = 0;
             if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
@@ -56,7 +56,7 @@ function baccarat(state = initialBaccaratState, action) {
                 lastCard: value
             }
         }
-        case(DEALER_DRAW): {
+        case(BACCARAT_DEALER_DRAW): {
             const card = action.payload.cards[0];
             let value = 0;
             if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
@@ -98,7 +98,7 @@ function baccarat(state = initialBaccaratState, action) {
                 dealerTotal: action.payload
             }
         }
-        case(HANDS_RESET): {
+        case(BACCARAT_HANDS_RESET): {
             return {
                 ...state,
                 playerHand: [],

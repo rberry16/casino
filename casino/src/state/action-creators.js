@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SHUFFLE, BACCARAT_PLAYER_TOTAL, BACCARAT_DEALER_TOTAL, DEALER_DRAW, PLAYER_DRAW, HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN } from './action-types';
+import { SHUFFLE, BACCARAT_PLAYER_TOTAL, BACCARAT_DEALER_TOTAL, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN } from './action-types';
 
 
 export function shuffle () {
@@ -14,11 +14,11 @@ export function shuffle () {
     }
 }
 
-export function playerDraw (deck_id) {
+export function baccaratPlayerDraw (deck_id) {
     return function (dispatch) {
         axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
             .then(res => {
-                dispatch({type: PLAYER_DRAW, payload: res.data});
+                dispatch({type: BACCARAT_PLAYER_DRAW, payload: res.data});
             })
             .catch(err => {
                 console.error(err);
@@ -26,11 +26,11 @@ export function playerDraw (deck_id) {
     }
 }
 
-export function dealerDraw (deck_id) {
+export function baccaratDealerDraw (deck_id) {
     return function (dispatch) {
         axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
             .then(res => {
-                dispatch({type: DEALER_DRAW, payload: res.data});
+                dispatch({type: BACCARAT_DEALER_DRAW, payload: res.data});
             })
             .catch(err => {
                 console.error(err);
@@ -64,9 +64,9 @@ export function baccaratDealerTotal (hand) {
     }
 }
 
-export function handsReset () {
+export function baccaratHandsReset () {
     return function (dispatch) {
-        dispatch({type: HANDS_RESET});
+        dispatch({type: BACCARAT_HANDS_RESET});
     }
 }
 
