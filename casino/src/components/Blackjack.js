@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset} from '../state/action-creators';
+import {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset, baccaratDealerDraw} from '../state/action-creators';
 
 const Blackjack = (props) => {
     const {shuffle, dealerHand, 
@@ -36,6 +36,12 @@ const Blackjack = (props) => {
         setTimeout(blackjackPlayerDraw, 500, deck);
     }
 
+    const stay = () => {
+        while (dealerTotal < 17) {
+            blackjackDealerDraw(deck);
+        }
+    }
+
     return (
         <div id='wrapper'>
             {
@@ -55,6 +61,7 @@ const Blackjack = (props) => {
                         </div>
                         <button onClick={newGame}>New</button>
                         <button onClick={hit}>Hit</button>
+                        <button onClick={stay}>Stay</button>
                     </>
                 ) : 'loading game...'
             }
