@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import { combineReducers } from "redux";
-import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, SHUFFLE, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW } from "./action-types";
+import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, SHUFFLE, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW, BLACKJACK_PLAYER_TOTAL, BLACKJACK_DEALER_TOTAL, BLACKJACK_HANDS_RESET } from "./action-types";
 
 
 
@@ -240,6 +240,25 @@ function blackjack(state = initialBlackJackState, action) {
             return {
                 ...state,
                 dealerHand: newDealerHand
+            }
+        }
+        case(BLACKJACK_PLAYER_TOTAL): {
+            return {
+                ...state,
+                playerTotal: action.payload
+            }
+        }
+        case(BLACKJACK_DEALER_TOTAL): {
+            return {
+                ...state,
+                dealerTotal: action.payload
+            }
+        }
+        case(BLACKJACK_HANDS_RESET): {
+            return {
+                ...state,
+                playerHand: [],
+                dealerHand: []
             }
         }
     }

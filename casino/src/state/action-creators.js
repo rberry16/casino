@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { SHUFFLE, BACCARAT_PLAYER_TOTAL, BACCARAT_DEALER_TOTAL, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW } from './action-types';
+import { SHUFFLE, BACCARAT_PLAYER_TOTAL, 
+         BACCARAT_DEALER_TOTAL, BACCARAT_DEALER_DRAW, 
+         BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, 
+         BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, 
+         BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW, 
+         BLACKJACK_PLAYER_TOTAL, BLACKJACK_DEALER_TOTAL, BLACKJACK_HANDS_RESET } from './action-types';
 
 //shared actions
 export function shuffle () {
@@ -157,5 +162,55 @@ export function blackjackDealerDraw (deck_id) {
             .catch(err => {
                 console.error(err);
             })
+    }
+}
+
+export function blackjackPlayerTotal (hand) {
+    return function(dispatch) {
+        let total = 0;
+        let aces = 0;
+        hand.forEach(card => {
+            if (card.value === 'ACE') {
+                aces = aces + 1;
+            } else {
+                total = total + card.value;
+            }
+        })
+        for (let i = 0; i < aces; i++) {
+            if (total + 11 > 21) {
+                total = total + 1;
+            } else {
+                total = total + 11;
+            }
+        }
+        dispatch({type: BLACKJACK_PLAYER_TOTAL, payload: total});
+    }
+}
+
+export function blackjackDealerTotal (hand) {
+    return function(dispatch) {
+        let total = 0;
+        let aces = 0;
+        hand.forEach(card => {
+            if (card.value === 'ACE') {
+                aces = aces + 1;
+            } else {
+                total = total + card.value;
+            }
+        })
+        for (let i = 0; i < aces; i++) {
+            if (total + 11 > 21) {
+                total = total + 1;
+            } else {
+                total = total + 11;
+            }
+        }
+        dispatch({type: BLACKJACK_DEALER_TOTAL, payload: total});
+    }
+}
+
+export function blackjackHandsReset () {
+    return function(dispatch) {
+        dispatch({type: BLACKJACK_HANDS_RESET});
     }
 }
