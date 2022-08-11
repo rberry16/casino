@@ -4,7 +4,7 @@ import { SHUFFLE, BACCARAT_PLAYER_TOTAL,
          BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, 
          BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, 
          BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW, 
-         BLACKJACK_PLAYER_TOTAL, BLACKJACK_DEALER_TOTAL, BLACKJACK_HANDS_RESET } from './action-types';
+         BLACKJACK_PLAYER_TOTAL, BLACKJACK_DEALER_TOTAL, BLACKJACK_HANDS_RESET, CHECK_BLACKJACK_TOTAL } from './action-types';
 
 //shared actions
 export function shuffle () {
@@ -214,3 +214,10 @@ export function blackjackHandsReset () {
         dispatch({type: BLACKJACK_HANDS_RESET});
     }
 }
+
+export function checkBlackjackTotal (total) {
+    return function(dispatch) {
+        dispatch({type: CHECK_BLACKJACK_TOTAL, payload: total});
+    }
+}
+

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset, baccaratDealerDraw} from '../state/action-creators';
+import {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset, checkBlackjackTotal} from '../state/action-creators';
 
 const Blackjack = (props) => {
     const {shuffle, dealerHand, 
@@ -9,7 +9,7 @@ const Blackjack = (props) => {
            playerTotal, blackjackPlayerDraw,
            blackjackDealerDraw, blackjackPlayerTotal,
            blackjackDealerTotal, blackjackHandsReset,
-           deck
+           deck, checkBlackjackTotal
         } = props;
 
     useEffect(() => {
@@ -37,8 +37,11 @@ const Blackjack = (props) => {
     }
 
     const stay = () => {
-        while (dealerTotal < 17) {
-            blackjackDealerDraw(deck);
+        for (let i = 0; i < 5; i++) {
+            blackjackDealerTotal(dealerHand);
+            if (checkBlackjackTotal(blackjackDealerTotal(dealerHand)) < 17) {
+                blackjackDealerDraw(deck);
+            }
         }
     }
 
@@ -80,4 +83,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset})(Blackjack);
+export default connect(mapStateToProps, {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset, checkBlackjackTotal})(Blackjack);
