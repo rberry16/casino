@@ -37,7 +37,9 @@ const Blackjack = (props) => {
     }
     
     const stay = async () => {
-        blackjackDealerTurn(dealerTotal, deck);
+        for (let i = 0; i < 5; i++) {
+            blackjackDealerTurn(dealerTotal, deck);
+        }
     }
 
     
