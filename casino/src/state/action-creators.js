@@ -4,7 +4,8 @@ import { SHUFFLE, BACCARAT_PLAYER_TOTAL,
          BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, 
          BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, 
          BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW, 
-         BLACKJACK_PLAYER_TOTAL, BLACKJACK_DEALER_TOTAL, BLACKJACK_HANDS_RESET, CHECK_BLACKJACK_TOTAL } from './action-types';
+         BLACKJACK_PLAYER_TOTAL, BLACKJACK_DEALER_TOTAL, 
+         BLACKJACK_HANDS_RESET, CHECK_BLACKJACK_TOTAL, BLACKJACK_DEALER_TURN } from './action-types';
 
 //shared actions
 export function shuffle () {
@@ -198,6 +199,7 @@ export function blackjackDealerTotal (hand) {
                 total = total + card.value;
             }
         })
+        let acesTotal = 0
         for (let i = 0; i < aces; i++) {
             if (total + 11 > 21) {
                 total = total + 1;
@@ -212,6 +214,22 @@ export function blackjackDealerTotal (hand) {
 export function blackjackHandsReset () {
     return function(dispatch) {
         dispatch({type: BLACKJACK_HANDS_RESET});
+    }
+}
+
+export function blackjackDealerTurn (total, deck_id) {
+    return function(dispatch) {
+        if (total < 17) {
+            axios.get(`https://www.deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`)
+                .then(res => {
+                    dispatch({type: BLACKJACK_DEALER_TURN, payload: res.data});
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        } else {
+            dispatch({type: BLACKJACK_DEALER_TURN, payload: null});
+        }
     }
 }
 

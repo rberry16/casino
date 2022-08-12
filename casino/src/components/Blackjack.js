@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset, checkBlackjackTotal} from '../state/action-creators';
+import {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset, blackjackDealerTurn, checkBlackjackTotal} from '../state/action-creators';
 
 const Blackjack = (props) => {
     const {shuffle, dealerHand, 
@@ -9,7 +9,7 @@ const Blackjack = (props) => {
            playerTotal, blackjackPlayerDraw,
            blackjackDealerDraw, blackjackPlayerTotal,
            blackjackDealerTotal, blackjackHandsReset,
-           deck, checkBlackjackTotal
+           deck, blackjackDealerTurn
         } = props;
 
     useEffect(() => {
@@ -35,15 +35,12 @@ const Blackjack = (props) => {
     const hit = () => {
         setTimeout(blackjackPlayerDraw, 500, deck);
     }
-
-    const stay = () => {
-        for (let i = 0; i < 5; i++) {
-            blackjackDealerTotal(dealerHand);
-            if (checkBlackjackTotal(blackjackDealerTotal(dealerHand)) < 17) {
-                blackjackDealerDraw(deck);
-            }
-        }
+    
+    const stay = async () => {
+        blackjackDealerTurn(dealerTotal, deck);
     }
+
+    
 
     return (
         <div id='wrapper'>
@@ -83,4 +80,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset, checkBlackjackTotal})(Blackjack);
+export default connect(mapStateToProps, {shuffle, blackjackPlayerDraw, blackjackDealerDraw, blackjackPlayerTotal, blackjackDealerTotal, blackjackHandsReset, blackjackDealerTurn})(Blackjack);

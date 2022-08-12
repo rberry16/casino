@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import { combineReducers } from "redux";
-import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, SHUFFLE, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW, BLACKJACK_PLAYER_TOTAL, BLACKJACK_DEALER_TOTAL, BLACKJACK_HANDS_RESET, CHECK_BLACKJACK_TOTAL } from "./action-types";
+import { BACCARAT_DEALER_TOTAL, BACCARAT_PLAYER_TOTAL, SHUFFLE, BACCARAT_DEALER_DRAW, BACCARAT_PLAYER_DRAW, BACCARAT_HANDS_RESET, BACCARAT_PLAYER_TURN, BACCARAT_DEALER_TURN, BLACKJACK_PLAYER_DRAW, BLACKJACK_DEALER_DRAW, BLACKJACK_PLAYER_TOTAL, BLACKJACK_DEALER_TOTAL, BLACKJACK_HANDS_RESET, CHECK_BLACKJACK_TOTAL, BLACKJACK_DEALER_TURN } from "./action-types";
 
 
 
@@ -262,6 +262,33 @@ function blackjack(state = initialBlackJackState, action) {
                 ...state,
                 playerHand: [],
                 dealerHand: []
+            }
+        }
+        case(BLACKJACK_DEALER_TURN): {
+            if (action.payload === null) {
+                return state;
+            } else {
+                const card = action.payload.cards[0];
+                let value = 0;
+                if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
+                    value = 10;
+                } else if (card.value === 'ACE') {
+                    value = 'ACE';
+                } else {
+                    value = Number(card.value);
+                }
+                const newDealerHand = [
+                    ...state.dealerHand,
+                    {
+                        image: card.image,
+                        code: card.code,
+                        value: value
+                    }
+                ]
+                return {
+                    ...state,
+                    dealerHand: newDealerHand
+                }
             }
         }
     }
